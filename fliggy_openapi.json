@@ -1,77 +1,82 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Fliggy Flight Search API",
-    "version": "1.0.0",
-    "description": "查询国内航班票价和航班列表，基于飞猪开放平台"
+  "name": "JuheFlightQuery",
+  "type": "http",
+  "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询，返回航班号、航空公司、起降时间、票价及航段信息",
+  "request": {
+    "method": "GET",
+    "url": "https://apis.juhe.cn/flight/query",
+    "headers": {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "params": {
+      "departure": "{{departure}}",
+      "arrival": "{{arrival}}",
+      "departureDate": "{{departureDate}}",
+      "flightNo": "{{flightNo}}",
+      "maxSegments": "{{maxSegments}}",
+      "key": "{{appKey}}"
+    }
   },
-  "servers": [
+  "input": [
     {
-      "url": "https://eco.taobao.com/router/rest"
+      "name": "departure",
+      "type": "string",
+      "required": true,
+      "description": "出发地城市码或机场码（IATA代码），如BJS、SHA、CAN"
+    },
+    {
+      "name": "arrival",
+      "type": "string",
+      "required": true,
+      "description": "目的地城市码或机场码（IATA代码），如BJS、SHA、CAN"
+    },
+    {
+      "name": "departureDate",
+      "type": "string",
+      "required": true,
+      "description": "行程出发日期，如：2025-12-21"
+    },
+    {
+      "name": "flightNo",
+      "type": "string",
+      "required": false,
+      "description": "航班号，可选，如MU8218"
+    },
+    {
+      "name": "maxSegments",
+      "type": "string",
+      "required": false,
+      "description": "行程航段数量，可选：0任意，1直飞，2最多2航段"
+    },
+    {
+      "name": "appKey",
+      "type": "string",
+      "required": true,
+      "description": "聚合数据个人中心申请的 API Key"
     }
   ],
-  "paths": {
-    "/flight/search": {
-      "get": {
-        "summary": "查询国内机票",
-        "parameters": [
-          {
-            "name": "fromCity",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "出发城市（三字码或拼音）"
-          },
-          {
-            "name": "toCity",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "目的地城市（三字码或拼音）"
-          },
-          {
-            "name": "departDate",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "description": "出发日期 YYYY-MM-DD"
-          },
-          {
-            "name": "returnDate",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string", "format": "date" },
-            "description": "返程日期（可选）"
-          },
-          {
-            "name": "adultNum",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "integer", "default": 1 },
-            "description": "成人票数量"
-          },
-          {
-            "name": "sessionKey",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "飞猪开放平台 API Session Key"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功返回航班列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "jipiao_search_response": { "type": "object" }
-                  }
-                }
-              }
-            }
-          }
+  "output": {
+    "type": "json",
+    "mapping": {
+      "flights": {
+        "path": "result.flightInfo",
+        "properties": {
+          "flightNo": "flightNo",
+          "airlineCode": "airline",
+          "airlineName": "airlineName",
+          "departAirportCode": "departure",
+          "departAirportName": "departureName",
+          "departDate": "departureDate",
+          "departTime": "departureTime",
+          "arriveAirportCode": "arrival",
+          "arriveAirportName": "arrivalName",
+          "arriveDate": "arrivalDate",
+          "arriveTime": "arrivalTime",
+          "duration": "duration",
+          "transferNum": "transferNum",
+          "ticketPrice": "ticketPrice",
+          "segments": "segments",
+          "isCodeShare": "isCodeShare"
         }
       }
     }
