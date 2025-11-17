@@ -1,74 +1,81 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Juhe Flight Query API",
-    "version": "1.0.0",
-    "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询"
-  },
-  "servers": [
-    {
-      "url": "https://apis.juhe.cn/flight/query"
-    }
-  ],
-  "paths": {
-    "/": {
-      "get": {
-        "operationId": "queryFlights",
-        "summary": "查询国内航班",
-        "parameters": [
-          {
-            "name": "departure",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "出发地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
-          },
-          {
-            "name": "arrival",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "目的地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
-          },
-          {
-            "name": "departureDate",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "description": "出发日期 YYYY-MM-DD"
-          },
-          {
-            "name": "flightNo",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string" },
-            "description": "航班号，可选，如MU8218"
-          },
-          {
-            "name": "maxSegments",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string", "default": "0" },
-            "description": "行程航段数量，可选：0任意，1直飞，2最多2航段"
-          },
-          {
-            "name": "key",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "聚合数据个人中心申请的 API Key"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "成功返回航班列表",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "result": { "type": "object" },
-                    "flightInfo": { "type": "array" }
+  "name": "JuheFlightQuery",
+  "type": "tool",
+  "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询",
+  "schema": {
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Juhe Flight Query API",
+      "version": "1.0.0",
+      "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询"
+    },
+    "servers": [
+      {
+        "url": "https://apis.juhe.cn"
+      }
+    ],
+    "paths": {
+      "/flight/query": {
+        "get": {
+          "operationId": "queryFlights",
+          "summary": "查询国内航班",
+          "parameters": [
+            {
+              "name": "departure",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string" },
+              "description": "出发地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
+            },
+            {
+              "name": "arrival",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string" },
+              "description": "目的地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
+            },
+            {
+              "name": "departureDate",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string", "format": "date" },
+              "description": "出发日期 YYYY-MM-DD"
+            },
+            {
+              "name": "flightNo",
+              "in": "query",
+              "required": false,
+              "schema": { "type": "string" },
+              "description": "航班号，可选，如MU8218"
+            },
+            {
+              "name": "maxSegments",
+              "in": "query",
+              "required": false,
+              "schema": { "type": "string", "default": "0" },
+              "description": "行程航段数量，可选：0任意，1直飞，2最多2航段"
+            },
+            {
+              "name": "key",
+              "in": "query",
+              "required": true,
+              "schema": { "type": "string" },
+              "description": "聚合数据个人中心申请的 API Key"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "成功返回航班列表",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "reason": { "type": "string" },
+                      "error_code": { "type": "integer" },
+                      "result": { "type": "object" },
+                      "flightInfo": { "type": "array" }
+                    }
                   }
                 }
               }
