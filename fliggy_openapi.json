@@ -13,6 +13,7 @@
   "paths": {
     "/": {
       "get": {
+        "operationId": "queryFlights",
         "summary": "查询国内航班",
         "parameters": [
           {
