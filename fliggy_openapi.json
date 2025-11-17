@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Fliggy Flight Search API",
+    "version": "1.0.0",
+    "description": "查询国内航班票价和航班列表，基于飞猪开放平台"
+  },
+  "servers": [
+    {
+      "url": "https://eco.taobao.com/router/rest"
+    }
+  ],
+  "paths": {
+    "/flight/search": {
+      "get": {
+        "summary": "查询国内机票",
+        "parameters": [
+          {
+            "name": "fromCity",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "出发城市（三字码或拼音）"
+          },
+          {
+            "name": "toCity",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "目的地城市（三字码或拼音）"
+          },
+          {
+            "name": "departDate",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "description": "出发日期 YYYY-MM-DD"
+          },
+          {
+            "name": "returnDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "返程日期（可选）"
+          },
+          {
+            "name": "adultNum",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 },
+            "description": "成人票数量"
+          },
+          {
+            "name": "sessionKey",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "飞猪开放平台 API Session Key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回航班列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jipiao_search_response": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
