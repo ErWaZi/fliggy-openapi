@@ -1,82 +1,78 @@
 {
-  "name": "JuheFlightQuery",
-  "type": "http",
-  "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询，返回航班号、航空公司、起降时间、票价及航段信息",
-  "request": {
-    "method": "GET",
-    "url": "https://apis.juhe.cn/flight/query",
-    "headers": {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    "params": {
-      "departure": "{{departure}}",
-      "arrival": "{{arrival}}",
-      "departureDate": "{{departureDate}}",
-      "flightNo": "{{flightNo}}",
-      "maxSegments": "{{maxSegments}}",
-      "key": "{{appKey}}"
-    }
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Juhe Flight Query API",
+    "version": "1.0.0",
+    "description": "基于聚合数据Juhe的国内航班查询工具，支持单程航班查询"
   },
-  "input": [
+  "servers": [
     {
-      "name": "departure",
-      "type": "string",
-      "required": true,
-      "description": "出发地城市码或机场码（IATA代码），如BJS、SHA、CAN"
-    },
-    {
-      "name": "arrival",
-      "type": "string",
-      "required": true,
-      "description": "目的地城市码或机场码（IATA代码），如BJS、SHA、CAN"
-    },
-    {
-      "name": "departureDate",
-      "type": "string",
-      "required": true,
-      "description": "行程出发日期，如：2025-12-21"
-    },
-    {
-      "name": "flightNo",
-      "type": "string",
-      "required": false,
-      "description": "航班号，可选，如MU8218"
-    },
-    {
-      "name": "maxSegments",
-      "type": "string",
-      "required": false,
-      "description": "行程航段数量，可选：0任意，1直飞，2最多2航段"
-    },
-    {
-      "name": "appKey",
-      "type": "string",
-      "required": true,
-      "description": "聚合数据个人中心申请的 API Key"
+      "url": "https://apis.juhe.cn/flight/query"
     }
   ],
-  "output": {
-    "type": "json",
-    "mapping": {
-      "flights": {
-        "path": "result.flightInfo",
-        "properties": {
-          "flightNo": "flightNo",
-          "airlineCode": "airline",
-          "airlineName": "airlineName",
-          "departAirportCode": "departure",
-          "departAirportName": "departureName",
-          "departDate": "departureDate",
-          "departTime": "departureTime",
-          "arriveAirportCode": "arrival",
-          "arriveAirportName": "arrivalName",
-          "arriveDate": "arrivalDate",
-          "arriveTime": "arrivalTime",
-          "duration": "duration",
-          "transferNum": "transferNum",
-          "ticketPrice": "ticketPrice",
-          "segments": "segments",
-          "isCodeShare": "isCodeShare"
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "查询国内航班",
+        "parameters": [
+          {
+            "name": "departure",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "出发地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
+          },
+          {
+            "name": "arrival",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "目的地城市码或机场码（IATA代码，如BJS, SHA, CAN）"
+          },
+          {
+            "name": "departureDate",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "description": "出发日期 YYYY-MM-DD"
+          },
+          {
+            "name": "flightNo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "航班号，可选，如MU8218"
+          },
+          {
+            "name": "maxSegments",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "0" },
+            "description": "行程航段数量，可选：0任意，1直飞，2最多2航段"
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "聚合数据个人中心申请的 API Key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功返回航班列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": { "type": "object" },
+                    "flightInfo": { "type": "array" }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
