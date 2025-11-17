@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "https://apis.juhe.cn/flight/query"
+      "url": "https://apis.juhe.cn/flight"
     }
   ],
   "paths": {
-    "/": {
+    "/query": {
       "get": {
         "operationId": "queryFlights",
         "summary": "查询国内航班",
@@ -79,3 +79,4 @@
     }
   }
 }
+
